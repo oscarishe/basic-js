@@ -23,9 +23,66 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(mass) {
+  let mineCounter=0;
+  let resultMatrix= new Array(mass.length);
+  for(let i=0;i<resultMatrix.length;i++) {
+    resultMatrix[i] =(new Array(mass[0].length).fill(0));
+  }
+  for(let i=0;i<mass.length;i++) {
+   
+    for(let j=0;j<mass[i].length;j++) {
+          if(i==0) {
+            if(mass[i][j-1]==true)
+              mineCounter++;
+            if(mass[i][j+1]==true)
+              mineCounter++;
+            if (mass[i+1][j-1]==true)
+              mineCounter++;
+            if(mass[i+1][j]==true)
+              mineCounter++;
+            if (mass[i+1][j+1]==true)
+              mineCounter++;
+            resultMatrix[i][j]=mineCounter;
+            mineCounter=0;
+          }
+          if(i==mass.length-1) {
+            if(mass[i][j-1]==true)
+              mineCounter++;
+            if(mass[i][j+1]==true)
+              mineCounter++;
+            if (mass[i-1][j-1]==true)
+              mineCounter++;
+            if(mass[i-1][j]==true)
+              mineCounter++;
+            if (mass[i-1][j+1]==true)
+              mineCounter++;
+            resultMatrix[i][j]=mineCounter;
+            mineCounter=0;
+          }
+          if(i!=mass.length-1 && i!=0) {
+            if(mass[i][j-1]==true)
+              mineCounter++;
+            if(mass[i][j+1]==true)
+              mineCounter++;
+            if (mass[i-1][j-1]==true)
+              mineCounter++;
+            if(mass[i-1][j]==true)
+              mineCounter++;
+            if (mass[i-1][j+1]==true)
+              mineCounter++;
+            if (mass[i+1][j-1]==true)
+              mineCounter++;
+            if(mass[i+1][j]==true)
+              mineCounter++;
+            if (mass[i+1][j+1]==true)
+              mineCounter++;
+            resultMatrix[i][j]=mineCounter;
+            mineCounter=0;
+          }
+    }
+  }
+  return resultMatrix;
 }
 
 module.exports = {
