@@ -20,13 +20,64 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(isDirect=true) {
+    this.isDirect = isDirect;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  encrypt(message,key) {
+  if(!message || !key) 
+      throw new Error("Incorrect arguments!");
+        let result = [];
+        
+        if(key.length<message.length) {
+            key = key.repeat(Math.ceil(message.length/key.length));
+            key = key.substring(0, message.length);
+        }
+            key = key.toLowerCase();
+            message = message.toLowerCase(); //.replace(/\W/g, '');
+            let j =0;
+        for(let i=0;i<message.length;i++) {
+            if(message[i].toUpperCase() == message[i].toLowerCase()) {
+              result.push(message[i]);
+            }
+            if(message[i].toUpperCase() != message[i].toLowerCase()) {
+            let letter = String.fromCharCode((((key.charCodeAt(j) - 97)+(message.charCodeAt(i)-97))%26)+97);
+            result.push(letter.toUpperCase());
+            j++;
+            }
+        }
+        console.log(key);
+        console.log(message);
+        return this.isDirect?  result.join(""): result.reverse().join("");
+    
+  }
+  decrypt(message,key) {
+      if(!message || !key) 
+      throw new Error("Incorrect arguments!");
+    
+        let result = [];
+        
+        if(key.length<message.length) {
+            key = key.repeat(Math.ceil(message.length/key.length));
+            key = key.substring(0, message.length);
+        }
+        key = key.toLowerCase();
+            message = message.toLowerCase()
+        let j =0;
+      for(let i=0;i<message.length;i++) {
+            if(message[i].toUpperCase() == message[i].toLowerCase()) {
+              result.push(message[i]);
+            }
+            if(message[i].toUpperCase() != message[i].toLowerCase()) {
+            let letterNumber = (((message.charCodeAt(i)-97)-(key.charCodeAt(j) - 97)));
+            if(letterNumber<0) letterNumber=letterNumber+26;
+            result.push(String.fromCharCode(letterNumber+97).toUpperCase());
+            j++;
+            }
+        
+        }
+        return this.isDirect?  result.join(""): result.reverse().join("");
+        
+          
   }
 }
 
